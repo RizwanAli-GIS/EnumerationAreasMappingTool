@@ -1,6 +1,6 @@
 # NewEATools — ArcGIS Pro Python Toolbox
 
-A custom ArcGIS Pro Python Toolbox (`.pyt`) for **Enumeration Area (EA) delineation**. It partitions administrative boundary polygons into spatially constrained clusters based on a numeric analysis field (e.g., household counts), using a hierarchical splitting strategy followed by spatially constrained multivariate clustering (SC-MVC).
+A custom ArcGIS Pro Python Toolbox (`.pyt`) for **Enumeration Area (EA) delineation**. It partitions administrative boundary polygons based on given min max threshold (e.g., household counts), using a hierarchical splitting strategy followed by spatially constrained multivariate clustering (SC-MVC).
 
 ---
 
@@ -26,9 +26,9 @@ The toolbox contains a single tool that automates the process of splitting large
 
 The core logic per admin polygon is:
 
-1. **Aggregate** — Count the total analysis field value (e.g., households) within the admin boundary via a spatial join.
+1. **Aggregate** — Count the total value (e.g., households) within the admin boundary via a spatial join.
 2. **Pass-through** — If the total is already within the maximum threshold, write the polygon to the output as-is.
-3. **Hierarchical splitting** — If the total exceeds the maximum, iteratively split the polygon using ordered hierarchy feature classes (e.g., roads → sub-district boundaries).
+3. **Hierarchical splitting** — If the total exceeds the maximum, iteratively split the polygon using ordered hierarchy feature classes (e.g., roads → plots → building features).
 4. **Gap-fill** — Union the split result with the original admin boundary to ensure full spatial coverage with no gaps.
 5. **SC-MVC clustering** — Apply ArcGIS's Spatially Constrained Multivariate Clustering to group sub-polygons into EAs that satisfy the `min_val` / `max_val` constraints.
 6. **Adaptive retry** — If clustering fails, the tool automatically adjusts constraints and retries, and falls back gracefully by eliminating zero-value polygons.
@@ -53,14 +53,14 @@ The core logic per admin polygon is:
 1. **Clone or download** this repository:
 
    ```bash
-   git clone https://github.com/<your-username>/NewEATools.git
+   git clone https://github.com/RizwanAli-GIS/EnumerationAreasMappingTool.git
    ```
 
 2. **Open ArcGIS Pro** and navigate to the **Catalog pane**.
 
 3. In the Catalog pane, go to **Toolboxes → Add Toolbox**.
 
-4. Browse to the cloned folder and select `NewEATools.pyt`.
+4. Browse to the cloned folder and select `EnumerationAreasMappintToolbox.pyt`.
 
 5. The toolbox will appear under **Toolboxes** and is ready to use.
 
@@ -88,7 +88,7 @@ The core logic per admin polygon is:
 
 #### Step 1 — HH_SUM Calculation (`calc_hh`)
 
-For any input polygon layer, the tool performs a **spatial join** to the Point Layer and sums the Analysis Field into a new field called `HH_SUM`. `NULL` values are replaced with `0`.
+For any input polygon layer, the tool performs a **spatial join** to the Point Layer and sums the Analysis Field. `NULL` values are replaced with `0`.
 
 This step is repeated throughout the workflow whenever the polygon geometry changes.
 
@@ -204,7 +204,7 @@ For each Admin Polygon
 ```
 NewEATools/
 │
-├── NewEATools.pyt        # Main Python Toolbox file
+├── EnumerationAreasMappintToolbox.pyt        # Main Python Toolbox file
 └── README.md             # This documentation
 ```
 
