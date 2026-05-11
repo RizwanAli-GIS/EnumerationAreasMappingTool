@@ -1,4 +1,4 @@
-# NewEATools — ArcGIS Pro Python Toolbox
+# Enumeration Areas Mapping — ArcGIS Pro Python Toolbox
 
 A custom ArcGIS Pro Python Toolbox (`.pyt`) for **Enumeration Area (EA) delineation**. It partitions administrative boundary polygons based on given min max threshold (e.g., household counts), using a hierarchical splitting strategy followed by spatially constrained multivariate clustering (SC-MVC).
 
